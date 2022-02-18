@@ -1,0 +1,91 @@
+{% extends 'Stafftemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Staff Profile {% endblock title %}
+
+{% block page_title %} Staff Profile {% endblock page_title %}
+
+{% block main_content %}
+ <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Staff Profile</h3>
+                </div>
+
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action = "{% url 'staff-profile-save' %}" method = "POST"> {% csrf_token %}
+                  <div class="card-body">
+
+                    <div class="form-group">
+                      <label for="username">Username</label>
+                      <input type="text" class="form-control" id="username" placeholder="Enter Username" name = "username" value="{{user.admin.username}}" disabled>
+                      <input type = "hidden" name = "user_id" value = "{{user.admin.id}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email Address" name = "email" disabled value = "{{user.admin.email}}">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" class="form-control" id="firstname" placeholder="First Name" name = "firstname" value = "{{user.admin.first_name}}">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" placeholder="Last Name" name = "lastname" value = {{user.admin.last_name}}>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="Address" name = "address" value = {{user.address}}>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="password">Change Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Only if you wish to change your password" name = "password" value = {{user.admin.password}} disabled>
+                      </div>
+
+                  </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-block ">Submit</button>
+                  </div>
+                    <div class = "form-group">
+                        {% if messages %}
+                            <div class = "col-12"> 
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %} 
+                    </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+
+{% block custom_script %} <script> </script>{% endblock custom_script %}

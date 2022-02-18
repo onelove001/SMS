@@ -1,0 +1,95 @@
+{% extends 'Studenttemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Attendance Data {% endblock title %}
+
+{% block page_title %} Attendance Data {% endblock page_title %}
+
+{% block custom_css %} 
+    <style>
+        .col-lg-3.attendance_div_red{
+            padding:10px;
+            padding-bottom:20px;
+            padding-top:20px;
+            background:#f44336;
+            border:10px solid white;
+            text-align: center;
+            color:#fff;
+            border-radius: 25px;
+            box-shadow: 1px 1px 1px grey;
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+        .col-lg-3.attendance_div_green{
+            padding:10px;
+            padding-bottom:20px;
+            padding-top:20px;
+            background:#388e36;
+            border:10px solid white;
+            text-align: center;
+            color:#fff;
+            border-radius: 25px;
+            box-shadow: 1px 1px 1px grey;
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+    </style>
+{% endblock custom_css %}
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"> Attendance Data </h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <!-- card body  -->
+                    <div class = "card-body">
+                        <!-- row -->
+                        <div class = "row">
+                        {% for atten in attendance_reps %}
+                            <!-- col -->
+                            {% if atten.status == True %}
+                            <div class = "col-lg-3 attendance_div_green">
+                               <b> Date: {{ atten.attendance_id.attendance_date }} </b>
+                               <br>
+                               <b> [status: Present ] </b>
+                            </div>
+                            {% elif atten.status == False %}
+                            <div class = "col-lg-3 attendance_div_red">
+                                <b> Date: {{ atten.attendance_id.attendance_date }} </b>
+                                <br>
+                                <b> [status: Absent] </b>
+                            </div>
+                            {% endif %}
+                            <!-- /.col  -->
+                        {% endfor %}
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card body -->
+                </div>
+              <!-- /.card -->
+
+            </div>
+            <!-- col /. -->
+        </div>
+        <!-- row /. -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_script %} 
+
+{% endblock custom_script %}

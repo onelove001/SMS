@@ -1,0 +1,76 @@
+{% load static %} 
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="{% url 'staff-profile' %}" class="brand-link">
+    <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+          style="opacity: .8">
+    <span class="brand-text font-weight-light">{{user.username}}</span>
+  </a>
+  
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        <li class="nav-item">
+          {% url 'staff-dashboard' as staff_dashboard %}
+          <a href="{{ staff_dashboard }}" class="nav-link {% if request.path == staff_dashboard %} active {% endif %}">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Dashboard
+              <span class="right badge badge-danger">New</span>
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'staff-take-attendance' as staff_take_attendance %}
+          <a href="{{ staff_take_attendance }}" class="nav-link {% if request.path == staff_take_attendance %} active {% endif %}">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Take Attendance
+              <span class="right badge badge-danger">New</span>
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'staff-update-attendance' as staff_update_attendance %}
+          <a href="{{ staff_update_attendance }}" class="nav-link {% if request.path == staff_update_attendance %} active {% endif %}">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Update Attendace
+              <span class="right badge badge-danger">New</span>
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'staff-apply-leave' as staff_apply_leave %}
+          <a href="{{ staff_apply_leave }}" class="nav-link {% if request.path == staff_apply_leave %} active {% endif %}">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Apply For Leave
+              <span class="right badge badge-danger">New</span>
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'staff-feedback' as staff_feedback %}
+          <a href="{{ staff_feedback }}" class="nav-link {% if request.path == staff_feedback %} active {% endif %}">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Feedback
+              <span class="right badge badge-danger">New</span>
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

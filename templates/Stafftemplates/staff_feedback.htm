@@ -1,0 +1,120 @@
+{% extends 'Stafftemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Staff-Feedback {% endblock title %}
+
+{% block page_title %} Staff-Feedback {% endblock page_title %}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Staff Feedback</h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <form method = "POST" action = "{% url 'staff-feedback-save' %}"> {% csrf_token %}
+                        <!-- card body -->
+                        <div class = "card-body">
+        
+                            <div class="form-group">
+                                <label for="staff_feedback">Staff Feedback</label>
+                                <textarea rows = "6" class = "form-control" name = "staff_feedback" id = "staff_feedback">Staff Feedback</textarea>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label for="staff_feedback_reply">Staff Feedback Reply</label>
+                                <textarea rows = "6" class = "form-control" name = "staff_feedback_reply" id = "staff_feedback_reply">Staff Feedback Reply</textarea>
+                            </div> -->
+
+                        </div>
+                        <!-- /.card-body -->
+    
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-block" id = "submit_id">Submit</button>
+                        </div>
+                    </form>
+
+                    <div class = "form-group">
+                        {% if messages %}
+                            <div class = "col-12"> 
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %} 
+                    </div>
+
+                </div>
+              <!-- /.card -->
+              <br><br>
+              <div class="card card-warning">
+                <div class="card-header">
+                  <h3 class="card-title">Feedback History</h3>
+  
+                  <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+  
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Staff ID</th>
+                        <th>Staff Name</th>
+                        <th>Staff Feedback</th>
+                        <th>Feedback Reply</th>
+                        <th>Date Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in feedbacks %}
+                      <tr>
+                        <td>{{data.staff_id.id}}</td>
+                        <td>{{data.staff_id.admin.first_name}} {{ data.staff_id.admin.last_name}}</td>
+                        <td>{{data.feedback}}</td>
+                        <td>{{data.feedback_reply}}</td>
+                        <td>{{data.created_at}}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- col /. -->
+        </div>
+        <!-- row /. -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}

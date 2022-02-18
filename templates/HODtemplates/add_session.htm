@@ -1,0 +1,69 @@
+{% extends 'HODtemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Add Session {% endblock title %}
+
+{% block page_title %} Add Session {% endblock page_title %}
+
+{% block main_content %}
+ <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Create New Session</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action = "{% url 'add-session-save' %}" method = "POST"> {% csrf_token %}
+                  <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="session_start">Session Start Year</label>
+                        <input type="date" class="form-control" id="session_start" name = "session_start">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="session_end">Session End Year</label>
+                        <input type="date" class="form-control" id="session_end" name = "session_end">
+                    </div>
+
+                  </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                  </div>
+                    <div class = "form-group">
+                        {% if messages %}
+                            <div class = "col-12"> 
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %} 
+                    </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+
+{% block custom_script %} <script> console.log("we here @ staffs ") </script>{% endblock custom_script %}

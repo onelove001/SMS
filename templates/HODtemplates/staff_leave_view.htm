@@ -1,0 +1,81 @@
+{% extends 'HODtemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Leave Staff {% endblock title %}
+
+{% block page_title %} Leave Staff {% endblock page_title %}
+
+{% block main_content %}
+ <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Leave Staff</h3>
+  
+                  <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+  
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Staff ID</th>
+                        <th>Staff Name</th>
+                        <th>Leave Date</th>
+                        <th>Leave Message</th>
+                        <th>Created At</th>
+                        <th>Leave Status Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for leave in leaves %}
+                      <tr>
+                        <td>{{leave.id}}</td>
+                        <td>{{leave.staff_id.id}}</td>
+                        <td>{{leave.staff_id.admin.first_name}} - {{leave.staff_id.admin.last_name}}</td>
+                        <td>{{leave.leave_date}}</td>
+                        <td>{{leave.leave_message}}</td>
+                        <td>{{leave.created_at}}</td>
+                        <td>
+                            {% if leave.leave_status == 2 %}
+                                <a href="{% url 'staff-approve-leave' leave.id %}" class="btn btn-success">Approve</a>
+                                <a href="{% url 'staff-disapprove-leave' leave.id %}" class="btn btn-danger">Disapprove</a>
+                            {% elif leave.leave_status == 1 %}
+                                <button disabled class="btn btn-success">Approved</a>
+                            {% else %}
+                                <button disabled class="btn btn-danger">Disapproved</a>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+          <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+  
+{% endblock main_content %}
+
+{% block custom_script %} 
+
+{% endblock custom_script %}

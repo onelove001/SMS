@@ -1,0 +1,115 @@
+{% extends 'HODtemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Update Student {% endblock title %}
+
+{% block page_title %} Update Student | {{ student.admin.username }} | #{{ student.admin.id }}{% endblock page_title %}
+
+{% block main_content %}
+ <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Update Student </h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action = "{% url 'update-student-save' %}" method = "POST" enctype="multipart/form-data"> {% csrf_token %}
+                  <div class="card-body">
+
+                    <div class="form-group">
+                      <label for="email">Email address</label>
+                      <input type="email" class="form-control" id="email" placeholder="Enter email" name = "email" value = {{student.admin.email}}>
+                      <input type = "hidden" value = {{student.admin.id}} name = "student_id">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" name = "username" value = {{student.admin.username}}>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" class="form-control" id="firstname" placeholder="First Name" name = "firstname" value = {{student.admin.first_name}}>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" placeholder="Last Name" name = "lastname" value = {{student.admin.last_name}}>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="Address" name = "address" value = {{student.address}}>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Course</label>
+                        <select class="form-control" name = "course_id">
+                            {% for course in courses %}
+                                <option value = "{{ course.id }}" {% if course.id == student.course_id.id %} selected {% endif %}> {{ course.course_name }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" name = "gender" id = "gender">
+                            <option {% if student.gender == "Male" %} selected {% endif %}> Male </option>
+                            <option {% if student.gender == "Female" %} selected {% endif %}> Female </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="session">Session</label>
+                        <select class="form-control" name = "session_id">
+                            {% for session in sessions %}
+                                <option value = "{{ session.id }}" {% if session.id == student.session_year_id.id %} selected {% endif %}> {{ session.session_start_year }} - {{ session.session_end_year }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_pic">Display Picture</label>
+                        <input type="file" class="form-control" id="profile_pic" name = "profile_pic">
+                    </div>
+
+                  </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                  </div>
+                    <div class = "form-group">
+                        {% if messages %}
+                            <div class = "col-12"> 
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                            {{ message }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %} 
+                    </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+
+{% block custom_script %} <script> console.log("we here @ staffs ") </script>{% endblock custom_script %}
