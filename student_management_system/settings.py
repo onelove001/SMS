@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-92#1og6=_nsn!tv(1p_p*=j%t9q=z34u97g-#1$y6g_jj83j*k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["stdmanagementsystem.herokuapp.com"]
+ALLOWED_HOSTS = ["*"]
 AUTH_USER_MODEL = "student_management_app.CustomUser"
 # Application definition
 
