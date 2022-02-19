@@ -11,7 +11,7 @@ from student_management_app.Staffviews import *
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('login', login, name = 'login-page'),
+    path('', login, name = 'login-page'),
     path('login_user', login_user, name = 'login-user'),
     path('logout', logout_user, name = 'logout-user'),
     path('get_user_details', get_user_details, name = 'get-user-details'),
