@@ -1,0 +1,191 @@
+{% extends 'Stafftemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Staff-Update-Result {% endblock title %}
+
+{% block page_title %} Staff Update Result {% endblock page_title %}
+
+{% block main_content %}
+<!--  content -->
+<section class="content">
+
+    <!--  container-fluid -->
+    <div class="container-fluid">
+
+        <!-- row  -->
+        <div class="row">
+
+            <!-- left column -->
+            <div class="col-md-12">
+
+                <!-- form  -->
+                <form method = "POST" action = "{% url 'edit_student_result_save' %}"> {% csrf_token %}
+                    <!-- card -->
+                    <div class="card card-primary">
+                        <!-- card header  -->
+                        <div class="card-header">
+                            <h3 class="card-title">Update Student Result</h3>
+                        </div>
+                        <!-- /.card-header -->
+
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="subject_id">Subject</label>
+                                <select class="form-control" name = "subject_id" id = "subject_idd">
+                                    {% for subject in subjects %}
+                                        <option value = "{{ subject.id }}"> {{ subject.subject_name }}  </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <select class="form-control" name = "session_id" id = "session_idd">
+                                    {% for session in sessions %}
+                                        <option value = "{{ session.id }}"> {{ session.session_start_year }} - {{ session.session_start_year }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="student_ids">Students</label>
+                                <select class="form-control" name = "student_idss" id = "student_ids">
+                                   
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exam_mark_id">Exam Score</label>
+                                <input type = "text" class="form-control" name = "exam_mark" id = "exam_mark_id" placeholder="Examination Score">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ass_mark_id">Assignment Score</label>
+                                <input type = "text" class="form-control" name = "ass_mark" id = "ass_mark_id" placeholder="Assignment Score">
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <!-- footer  -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-block" id = "save_student">Update Result</button>
+                        </div>
+                        <!-- /.card-footer-end  -->
+
+                        <div class = "form-group">
+                            {% if messages %}
+                                <div class = "col-12"> 
+                                    {% for message in messages %}
+                                        {% if message.tags == 'error' %}
+                                            <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                                {{ message }}
+                                            </div>
+                                        {% endif %}
+                                        {% if message.tags == 'success' %}
+                                            <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                                {{ message }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %} 
+                        </div>
+                    
+                    </div>
+                    <!-- /.card -->
+                </form>
+                <!-- /.form end -->
+            </div>
+            <!-- col /. -->
+        </div>
+        <!-- row /. -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_script %} 
+<script> 
+$(document).ready(function(){
+
+    $("#session_idd").change(function(){
+        fetchStudent();
+    });
+
+    $("#subject_idd").change(function(){
+        fetchStudent();
+    });
+
+    $("#student_ids").change(function(){
+        fetch_result();
+    });
+    
+    function fetchStudent() {
+
+    var subject = $("#subject_idd").val()
+    var session = $("#session_idd").val()
+
+    $.ajax({
+        url: "{% url 'get-students' %}",
+        type: "POST",
+        data: {session_id:session, subject_id:subject},
+
+    })
+    .done(function(response){
+        var json_data = JSON.parse(response)
+        var div_data = "";
+        for (key in json_data){
+            div_data += "<option value = '"+json_data[key]['id']+"'> #ID : "+json_data[key]['id']+" : "+json_data[key]['name']+"</option>";
+        }
+        $('#student_ids').html(div_data);
+
+    })
+
+    .fail(function(){
+        alert("Error fetching students!");
+
+    });
+
+    }
+
+    function fetch_result() {
+
+        var subject = $("#subject_idd").val()
+        var student_id = $("#student_ids").val()
+
+        $.ajax({
+        url: "{% url 'fetch_result' %}",
+        type: "POST",
+        data: {student_idss:student_id, subject_id:subject},
+
+    })
+    .done(function(response){
+        if (response == "False"){
+            alert("Result Not Uploaded Yet!")
+        }
+
+        else {
+        var json_data = JSON.parse(response)
+        $("#ass_mark_id").val(json_data['ass_mark']);
+        $("#exam_mark_id").val(json_data['exam_mark']);
+
+        }
+
+    })
+
+    .fail(function(){
+        alert("Error fetching students!");
+
+    });
+
+    }
+
+
+});
+</script>
+{% endblock custom_script %}
+

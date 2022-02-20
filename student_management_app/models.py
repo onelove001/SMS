@@ -133,3 +133,13 @@ class StafftNotification(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+
+class StudentResult(models.Model):
+    id = models.AutoField(primary_key=True)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject_exam = models.FloatField(default = 0)
+    subject_test = models.FloatField(default = 0)
+    created_at = models.DateField(auto_now_add = True)
+    updated_at = models.DateField(auto_now_add = True)

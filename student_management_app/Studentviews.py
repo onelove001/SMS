@@ -150,3 +150,11 @@ def student_profile_save(request):
         except:
             messages.error(request, "Failed!")
             return redirect(request.META.get("HTTP_REFERER"))
+
+        
+def student_view_result(request):
+    user = request.user.id
+    student_obj = Student.objects.get(admin = user)
+    my_results = StudentResult.objects.filter(student_id = student_obj.id)
+    context = {"my_results":my_results}
+    return render(request, "Studenttemplates/student_view_result.htm", context)

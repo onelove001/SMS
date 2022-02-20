@@ -22,7 +22,7 @@ def staff_dashboard(request):
         if cou not in final_course:
             final_course.append(cou)
 
-    total_students = Student.objects.filter(course_id__in = final_course).count()
+    total_studentss = Student.objects.filter(course_id__in = final_course).count()
     # fetch attendance
     attendance_total = Attendance.objects.filter(subject_id__in = subjectss).count()
     staff_leaves = StaffLeaveReport.objects.filter(staff_id = staff).count()
@@ -45,7 +45,7 @@ def staff_dashboard(request):
         student_attendance_list_present.append(attendance_present)
         student_list.append(stud.admin.username)
 
-    context = {"student_attendance_list_absent":student_attendance_list_absent, "student_attendance_list_present":student_attendance_list_present, "student_list":student_list, "attendance_list":attendance_list, "subject_list":subject_list, "subjects":subjects, "total_students":total_students, "attendance_total":attendance_total, "staff_leaves":staff_leaves}
+    context = {"student_attendance_list_absent":student_attendance_list_absent, "student_attendance_list_present":student_attendance_list_present, "student_list":student_list, "attendance_list":attendance_list, "subject_list":subject_list, "subjects":subjects, "total_studentss":total_studentss, "attendance_total":attendance_total, "staff_leaves":staff_leaves}
     return render(request, "Stafftemplates/home_content.htm", context)
 
 
@@ -225,7 +225,7 @@ def staff_fcm_token_save(request):
         return HttpResponse("False")
 
 
-def staff_profile_save(request):
+def staff_profile_save(request): 
     if request.method == "POST":
         user_id = request.POST.get("user_id")
         firstname = request.POST.get("firstname")
@@ -244,6 +244,95 @@ def staff_profile_save(request):
             user.save()
             
             messages.success(request, "Success!")
+            return redirect(request.META.get("HTTP_REFERER"))
+        except:
+            messages.error(request, "Failed!")
+            return redirect(request.META.get("HTTP_REFERER"))
+
+
+def staff_add_result(request):
+    user = request.user.id
+    subjects = Subject.objects.filter(staff_id = user)
+    sessions = Session.objects.all()
+    context = {"subjects":subjects, "sessions":sessions}
+    return render(request, "Stafftemplates/staff_add_result.htm", context)
+
+
+def staff_save_result(request):
+    if request.method == "POST":
+        student_ids = request.POST.get("student_list")
+        ass_mark = request.POST.get("assignment_marks")
+        exam_mark = request.POST.get("exam_marks")
+        subject = request.POST.get("subject_id")
+
+        student_obj =  Student.objects.get(admin = student_ids)
+        subject_obj = Subject.objects.get(id = subject)
+        
+        try:
+            check_exist = StudentResult.objects.filter(subject_id = subject_obj, student_id = student_obj).exists()
+            if check_exist:
+                result = StudentResult.objects.get(subject_id = subject_obj, student_id = student_obj)
+                result.subject_exam = exam_mark
+                result.subject_test = ass_mark
+                result.save()
+                messages.success(request, "Update Success!")
+                return redirect(request.META.get("HTTP_REFERER"))
+            result = StudentResult(student_id = student_obj, subject_id = subject_obj, subject_test = ass_mark, subject_exam = exam_mark)
+            result.save()
+
+            messages.success(request, "Success!")
+            return redirect(request.META.get("HTTP_REFERER"))
+        except:
+            messages.error(request, "Failed!")
+            return redirect(request.META.get("HTTP_REFERER"))
+
+
+def edit_student_result(request):
+    user = request.user.id
+    subjects = Subject.objects.filter(staff_id = user)
+    sessions = Session.objects.all()
+    context = {"subjects":subjects, "sessions":sessions}
+    return render(request, "Stafftemplates/edit_student_result.htm", context)
+
+
+@csrf_exempt
+def fetch_result(request):
+    student = request.POST.get("student_idss")
+    subject = request.POST.get("subject_id")
+
+    student_obj = Student.objects.get(admin = student)
+    subject_obj = Subject.objects.get(id = subject)
+   
+    try:
+        result = StudentResult.objects.filter(student_id = student_obj.id, subject_id = subject_obj).exists()
+        if result:
+            result = StudentResult.objects.get(student_id = student_obj.id, subject_id = subject_obj)
+            result_data = {"exam_mark":result.subject_exam, "ass_mark":result.subject_test}
+            
+            return HttpResponse(json.dumps(result_data))
+        else:
+            return HttpResponse("False")
+
+    except:
+        return HttpResponse("False")
+
+
+def edit_student_result_save(request):
+     if request.method == "POST":
+        student_ids = request.POST.get("student_idss")
+        ass_mark = request.POST.get("ass_mark")
+        exam_mark = request.POST.get("exam_mark")
+        subject = request.POST.get("subject_id")
+
+        student_obj =  Student.objects.get(admin = student_ids)
+        subject_obj = Subject.objects.get(id = subject)
+
+        try:
+            result = StudentResult.objects.get(subject_id = subject_obj, student_id = student_obj)
+            result.subject_exam = exam_mark
+            result.subject_test = ass_mark
+            result.save()
+            messages.success(request, "Update Success!")
             return redirect(request.META.get("HTTP_REFERER"))
         except:
             messages.error(request, "Failed!")

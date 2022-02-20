@@ -14,8 +14,19 @@ urlpatterns = [
     path('', login, name = 'login-page'),
     path('login_user', login_user, name = 'login-user'),
     path('logout', logout_user, name = 'logout-user'),
+
+    path('admin_signup', admin_signup, name = 'admin_signup'),
+    path('student_signup', student_signup, name = 'student_signup'),
+    path('staff_signup', staff_signup, name = 'staff_signup'),
+
+    path('staff_signup_save', staff_signup_save, name = 'staff_signup_save'),
+    path('student_signup_save', student_signup_save, name = 'student_signup_save'),
+    path('admin_signup_save', admin_signup_save, name = 'admin_signup_save'),
+
     path('get_user_details', get_user_details, name = 'get-user-details'),
     path('accounts/', include("django.contrib.auth.urls")),
+
+
 
     # Admin urls
     path('admin_dashboard', admin_dashboard, name = 'admin-dashboard'),
@@ -24,23 +35,19 @@ urlpatterns = [
     path('add_course', add_course, name = 'add-course'),
     path('add_subject', add_subject, name = 'add-subject'),
     path('add_session', add_session, name = 'add-session'),
-
     path('add_subject_save', add_subject_save, name = 'add-subject-save'),
     path('add_staff_save', add_staff_save, name = 'add-staff-save'),
     path('add_course_save', add_course_save, name = "add-course-save"),
     path('add_student_save', add_student_save, name = "add-student-save"),
     path('add_session_save', add_session_save, name = "add-session-save"),
-
     path("manage_staffs", manage_staffs, name = "manage-staffs"),
     path("manage_students", manage_students, name = "manage-students"),
     path("manage_courses", manage_courses, name = "manage-courses"),
     path("manage_subjects", manage_subjects, name = "manage-subjects"),
-
     path("update_staff/<str:staff_id>", update_staff, name = "update-staff"),
     path("update_student/<str:student_id>", update_student, name = "update-student"),
     path("update_course/<str:course_id>", update_course, name = "update-course"),
     path("update_subject/<str:subject_id>", update_subject, name = "update-subject"),
-
     path("update_staff_save", update_staff_save, name = "update-staff-save"),
     path("update_student_save", update_student_save, name = "update-student-save"),
     path("update_subject_save", update_subject_save, name = "update-subject-save"),
@@ -63,6 +70,7 @@ urlpatterns = [
     path("admin_profile", admin_profile, name = "admin-profile"),
     path("admin_profile_save", admin_profile_save, name = "admin-profile-save"),
 
+
     
     # Staff Urls
     path("staff_dashboard", staff_dashboard, name = "staff-dashboard"),
@@ -80,7 +88,11 @@ urlpatterns = [
     path("staff_profile", staff_profile, name = "staff-profile"),
     path("staff_profile_save", staff_profile_save, name = "staff-profile-save"),
     path("staff_fcm_token_save", staff_fcm_token_save, name = "staff_fcm_token_save"),
-
+    path("staff_add_result", staff_add_result, name = "staff_add_result"),
+    path("staff_save_result", staff_save_result, name = "staff_save_result"),
+    path("edit_student_result", edit_student_result, name = "edit_student_result"),
+    path("edit_student_result_save", edit_student_result_save, name = "edit_student_result_save"),
+    path("fetch_result", fetch_result, name = "fetch_result"),
     
 
 
@@ -95,7 +107,7 @@ urlpatterns = [
     path("student_profile", student_profile, name = "student-profile"),
     path("student_profile_save", student_profile_save, name = "student-profile-save"),
     path("student_fcm_token_save", student_fcm_token_save, name = "student_fcm_token_save"),
-
+    path("student_view_result", student_view_result, name = "student_view_result"),
     
 ]
 

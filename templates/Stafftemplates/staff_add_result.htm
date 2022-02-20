@@ -1,0 +1,148 @@
+{% extends 'Stafftemplates/base.htm' %}
+{% load static %}
+
+{% block title %} Staff-Result {% endblock title %}
+
+{% block page_title %} Staff Add Result {% endblock page_title %}
+
+{% block main_content %}
+<!--  content -->
+<section class="content">
+
+    <!--  container-fluid -->
+    <div class="container-fluid">
+
+        <!-- row  -->
+        <div class="row">
+
+            <!-- left column -->
+            <div class="col-md-12">
+
+                <!-- form  -->
+                <form method = "POST" action = "{% url 'staff_save_result' %}"> {% csrf_token %}
+                    <!-- card -->
+                    <div class="card card-primary">
+                        <!-- card header  -->
+                        <div class="card-header">
+                            <h3 class="card-title">Add Student Result</h3>
+                        </div>
+                        <!-- /.card-header -->
+
+                        <!-- card body -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="subject_id">Subject</label>
+                                <select class="form-control" name = "subject_id" id = "subject_idd">
+                                    {% for subject in subjects %}
+                                        <option value = "{{ subject.id }}"> {{ subject.subject_name }}  </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <select class="form-control" name = "session_id" id = "session_idd">
+                                    {% for session in sessions %}
+                                        <option value = "{{ session.id }}"> {{ session.session_start_year }} - {{ session.session_start_year }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <!-- footer  -->
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary btn-block" id = "fetch_student">Fetch Students</button>
+                        </div>
+                        <!-- /.card-footer-end  -->
+                        
+                        <div id = "student_data" class = "card-footer">
+
+                        </div>
+
+                        <div class = "form-group">
+                            {% if messages %}
+                                <div class = "col-12"> 
+                                    {% for message in messages %}
+                                        {% if message.tags == 'error' %}
+                                            <div style = "margin-top:10px;" class = "alert alert-danger"> 
+                                                {{ message }}
+                                            </div>
+                                        {% endif %}
+                                        {% if message.tags == 'success' %}
+                                            <div style = "margin-top:10px;" class = "alert alert-success"> 
+                                                {{ message }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %} 
+                        </div>
+                    
+                    </div>
+                    <!-- /.card -->
+                </form>
+                <!-- /.form end -->
+            </div>
+            <!-- col /. -->
+        </div>
+        <!-- row /. -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_script %} 
+<script> 
+$(document).ready(function(){
+
+    $("#fetch_student").click(function(){
+        var subject = $("#subject_idd").val()
+        var session = $("#session_idd").val()
+
+    $.ajax({
+        url: "{% url 'get-students' %}",
+        type: "POST",
+        data: {session_id:session, subject_id:subject},
+
+    })
+    .done(function(response){
+        var json_data = JSON.parse(response)
+        var div_data = "<div class='form-group'><label>Student List</label> <select class = 'form-control student_list' name = 'student_list'>";
+        for (key in json_data){
+            div_data += "<option value = '"+json_data[key]['id']+"'> #ID : "+json_data[key]['id']+" : "+json_data[key]['name']+"</option>";
+        }
+        div_data += "</select>";
+        div_data += "</div>";
+
+        div_data += "<div class = 'form-group'> <div class = 'row'>";
+        div_data += "<div class = 'col-lg-6'>";
+        div_data += "<label> Assignment Marks </label> <input type = 'text' name = 'assignment_marks' class = 'form-control' placeholder = 'Assignment Mark'>";
+        div_data += "</div>";
+
+        div_data += "<div class = 'col-lg-6'>";
+        div_data += "<label> Exam Marks </label> <input type = 'text' name = 'exam_marks' class = 'form-control' placeholder = 'Exam Mark'>";
+        div_data += "</div>";
+        div_data += "</div></div>";
+
+        div_data += "<div class = 'form-group'>";
+        div_data += "<button type='submit' class='btn btn-info btn-block'>Save Result</button>";
+        div_data += "</div>";
+
+        $('#student_data').html(div_data);
+
+    })
+
+    .fail(function(){
+        alert("Error fetching students!");
+
+    });
+
+    
+    });
+
+});
+</script>
+{% endblock custom_script %}

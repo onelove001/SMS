@@ -176,7 +176,6 @@ def add_student_save(request):
         try:
             user = CustomUser.objects.create_user(email = email, username = username, first_name = first_name, last_name = last_name, password = password, user_type = 3)
             user.student.address = address
-            user.student.course_id = course_obj
             user.student.session_year_id = session_obj
             user.student.course_id = course_obj
             user.student.gender = gender

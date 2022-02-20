@@ -39,7 +39,7 @@ class LoginCheckMiddleWare(MiddlewareMixin):
                 return redirect("login-page")
 
         else:
-            if request.path == reverse("login-page") or request.path == reverse("login-user") or modulename == "django.contrib.auth.views":
+            if request.path == reverse("login-page") or request.path == reverse("login-user") or modulename == "django.contrib.auth.views" or modulename == "student_management_app.views":
                 pass
 
             else:

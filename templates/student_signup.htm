@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SMS | Log in</title>
+  <title>SMS | Sign Up</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,17 +27,81 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign Up Student to start your session</p>
 
-      <form action="{% url 'login-user' %}" method="post"> {% csrf_token %}
+      <form action="{% url 'student_signup_save' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name = "username">
+          <input type="email" class="form-control" placeholder="Email" name = "email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
+
+        <div class="input-group mb-3">
+          <input type="username" class="form-control" placeholder="Username" name = "username">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="firstname" class="form-control" placeholder="Firstname" name = "firstname">
+          <div class="input-group-append">
+            <div class="input-group-text">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="lastname" class="form-control" placeholder="Lastname" name = "lastname">
+          <div class="input-group-append">
+            <div class="input-group-text">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="address" class="form-control" placeholder="Address" name = "address">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <select class="form-control" name = "course_id">
+              {% for course in courses %}
+                  <option value = "{{ course.id }}"> {{ course.course_name }} </option>
+              {% endfor %}
+          </select>
+      </div>
+
+      <div class="input-group mb-3">
+          <select class="form-control" name = "gender" id = "gender">
+              <option> Male </option>
+              <option> Female </option>
+          </select>
+      </div>
+
+      <div class="input-group mb-3">
+          <select class="form-control" name = "session_id">
+              {% for session in sessions %}
+                  <option value = "{{ session.id }}"> {{ session.session_start_year }} - {{ session.session_end_year }} </option>
+              {% endfor %}
+          </select>
+      </div>
+
+      <div class="input-group mb-3">
+          <input type="file" class="form-control" id="profile_pic" name = "profile_pic">
+      </div>
+
+        
         <div class="input-group mb-3">
           <input type="password" class="form-control" placeholder="Password" name = "password">
           <div class="input-group-append">
@@ -46,21 +110,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class = "input-group mb-3">
-          <div class="g-recaptcha" data-sitekey="6LeahI8eAAAAAPnoDbwqrpygiMRmm0xjBeAzwVWh"></div>
-        </div> -->
+       
         <div class="row">
-          <!-- <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div> -->
           <!-- /.col -->
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
           </div>
 
           {% if messages %}
@@ -79,34 +133,10 @@
             </div>
           {% endif %}
 
-
           <!-- /.col -->
         </div>
       </form>
-
-      <!-- <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div> -->
-      <!-- /.social-auth-links -->
-
-      <p class="mb-2 mt-4">
-        <a href="{% url 'password_reset' %}">Forgot Password</a>
-      </p>
-      <p class="mb-0">
-        <a href="{% url 'admin_signup' %}" class="text-center">Register Admin</a>
-      </p>
-      <p class="mb-0">
-        <a href="{% url 'staff_signup' %}" class="text-center">Register Staff</a>
-      </p>
-      <p class="mb-0">
-        <a href="{% url 'student_signup' %}" class="text-center">Register Student</a>
-      </p>
+     
     </div>
     <!-- /.login-card-body -->
   </div>
